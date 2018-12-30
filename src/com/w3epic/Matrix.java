@@ -61,7 +61,7 @@ public class Matrix {
 		
 		for (int i = 0; i < this.rowCount(); i++) {
 			for (int j = 0; j < this.colCount(); j++) {
-				sb.append(matrix[i][j] + "\t");
+				sb.append(String.format("%.3f\t", matrix[i][j]));
 				//System.out.print(matrix[i][j] + "\t");
 			}
 			sb.append("\n");
@@ -74,7 +74,7 @@ public class Matrix {
 	public Matrix multiply(Matrix that) {
 		Matrix result = null;
 		
-		if (this.rowCount() != that.colCount())
+		if (this.colCount() != that.rowCount())
 			return result;
 		
 		result = new Matrix(this.rowCount(), that.colCount());
@@ -175,13 +175,10 @@ public class Matrix {
 			return result;
 		}
 		
-		//result = new Matrix(this.colCount(), this.rowCount());
-		
 		double detA = this.determinant();
 		Matrix adjA = this.adjointed();
 		
 		result = adjA.multiply(1 / detA);
-		
 		
 		return result;
 	}
