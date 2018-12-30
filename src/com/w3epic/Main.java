@@ -75,6 +75,10 @@ public class Main {
 			{2, 0, -2}, 
 			{0, 1, 1}
 		});
+		Matrix.setPrecision(2);
+//		f.setPrecision(2);
+//		e.setPrecision(2);
+		System.out.println(e);
 		
 //		System.out.println(x.transposed().multiply(x));
 //		System.out.println(x.getMatrixExcept(4, 2));
@@ -82,6 +86,7 @@ public class Main {
 //		System.out.println(e.adjointed());
 //		System.out.println(e.multiply(1/2.0));
 //		System.out.println(f.inversed());
+		System.out.println(f.divide(e));
 		
 		
 

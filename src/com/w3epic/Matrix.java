@@ -2,6 +2,7 @@ package com.w3epic;
 
 public class Matrix {
 	private double[][] matrix;
+	private static int precision;
 
 	public Matrix(int row, int column) {
 		matrix = new double[row][column];
@@ -23,6 +24,15 @@ public class Matrix {
 		return matrix[x][y];
 	}
 	
+	public static void setPrecision(int p) {
+		precision = p;
+	}
+	
+	public static int getPrecision() {
+		return precision;
+	}
+	
+	// get rest of the matrix except row = x and column = y
 	public Matrix getMatrixExcept(int x, int y) {
 		Matrix result = new Matrix(this.rowCount() - 1, this.colCount() - 1);
 		
@@ -43,6 +53,7 @@ public class Matrix {
 		return result;
 	}
 	
+	// set value at x-th row, y-th column
 	public void set(int x, int y, double value) {
 		matrix[x][y] = value;
 	}
@@ -61,7 +72,9 @@ public class Matrix {
 		
 		for (int i = 0; i < this.rowCount(); i++) {
 			for (int j = 0; j < this.colCount(); j++) {
-				sb.append(String.format("%.3f\t", matrix[i][j]));
+				String format = "%." + precision + "f\t";
+				//System.out.println(format);
+				sb.append(String.format(format, matrix[i][j]));
 				//System.out.print(matrix[i][j] + "\t");
 			}
 			sb.append("\n");
@@ -69,6 +82,64 @@ public class Matrix {
 		}
 		
 		return sb.toString();
+	}
+	
+	public Matrix add(Matrix that) {
+		Matrix result = null;
+		
+		if (this.rowCount() != that.rowCount() || this.colCount() != that.colCount())
+			return result;
+		
+		result = new Matrix(this.rowCount(), this.colCount());
+		
+		for (int i = 0; i < this.rowCount(); i++) {
+			for (int j = 0; j < this.colCount(); j++) {
+				result.set(i, j, this.get(i, j) + that.get(i, j));
+			}
+		}
+		
+		return result;
+	}
+	
+	public Matrix add(double value) {
+		Matrix result = new Matrix(this.rowCount(), this.colCount());
+		
+		for (int i = 0; i < this.rowCount(); i++) {
+			for (int j = 0; j < this.colCount(); j++) {
+				result.set(i, j, this.get(i, j) + value);
+			}
+		}
+		
+		return result;
+	}
+	
+	public Matrix subtract(Matrix that) {
+		Matrix result = null;
+		
+		if (this.rowCount() != that.rowCount() || this.colCount() != that.colCount())
+			return result;
+		
+		result = new Matrix(this.rowCount(), this.colCount());
+		
+		for (int i = 0; i < this.rowCount(); i++) {
+			for (int j = 0; j < this.colCount(); j++) {
+				result.set(i, j, this.get(i, j) - that.get(i, j));
+			}
+		}
+		
+		return result;
+	}
+	
+	public Matrix subtract(double value) {
+		Matrix result = new Matrix(this.rowCount(), this.colCount());
+		
+		for (int i = 0; i < this.rowCount(); i++) {
+			for (int j = 0; j < this.colCount(); j++) {
+				result.set(i, j, this.get(i, j) - value);
+			}
+		}
+		
+		return result;
 	}
 	
 	public Matrix multiply(Matrix that) {
@@ -98,6 +169,23 @@ public class Matrix {
 		for (int i = 0; i < this.rowCount(); i++) {
 			for (int j = 0; j < this.colCount(); j++) {
 				result.set(i, j, this.get(i, j) * value);
+			}
+		}
+		
+		return result;
+	}
+	
+	// https://math.stackexchange.com/questions/228229/is-division-of-matrices-possible
+	public Matrix divide(Matrix that) {
+		return this.multiply(that.inversed());
+	}
+	
+	public Matrix divide(double value) {
+		Matrix result = new Matrix(this.rowCount(), this.colCount());
+		
+		for (int i = 0; i < this.rowCount(); i++) {
+			for (int j = 0; j < this.colCount(); j++) {
+				result.set(i, j, this.get(i, j) / value);
 			}
 		}
 		
